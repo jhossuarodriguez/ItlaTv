@@ -1,0 +1,32 @@
+﻿@model ItlaTv.Models.Serie
+
+<h2>Crear Nueva Serie</h2>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Nombre"></label>
+        <input asp-for="Nombre" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Imagen"></label>
+        <input asp-for="Imagen" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="EnlaceVideo"></label>
+        <input asp-for="EnlaceVideo" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ProductoraId"></label>
+        <select asp-for="ProductoraId" asp-items="ViewBag.Productoras" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="GeneroPrimarioId"></label>
+        <select asp-for="GeneroPrimarioId" asp-items="ViewBag.Generos" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="GeneroSecundarioId"></label>
+        <select asp-for="GeneroSecundarioId" asp-items="ViewBag.Generos" class="form-control"></select>
+    </div>
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+</form>

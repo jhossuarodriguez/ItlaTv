@@ -1,0 +1,26 @@
+﻿@model IEnumerable<ItlaTv.Models.Genero>
+
+<h2>Listado de Géneros</h2>
+
+<a asp-action="Create" class="btn btn-primary">Crear Nuevo Género</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var genero in Model)
+        {
+            <tr>
+                <td>@genero.Nombre</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@genero.Id" class="btn btn-warning">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@genero.Id" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
