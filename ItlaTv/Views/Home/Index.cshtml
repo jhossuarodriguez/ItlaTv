@@ -3,7 +3,7 @@
 <h2 class="mt-4 mb-4">Bienvenido al Catálogo de Series</h2>
 
 <form method="get">
-    <input type="text" name="search" placeholder="Buscar series..." class="w-25 form-control mb-3" />
+    <input type="text" name="search" placeholder="Buscar series..." class=" form-control mb-3" />
     <button type="submit" class="btn btn-primary">Buscar</button>
 </form>
 
@@ -21,12 +21,18 @@
         @foreach (var serie in Model)
         {
             <tr>
-               <td><img src="@serie.Imagen" width="50" /></td>
                <td>@serie.Nombre</td>
+               <td><img src="@serie.Imagen" width="50" /></td>
                <td>@serie.Productora.Nombre</td>
                <td>@serie.GeneroPrimario.Nombre</td>
               <td><a asp-action="Details" asp-route-id="@serie.Id" class="btn btn-info">Ver</a></td> 
             </tr>
-        }
+        } 
     </tbody>
 </table>
+
+<h2 class="mt-5">Peliculas Polulares</h2>
+    @foreach (var serie in Model)
+    {
+       
+    }

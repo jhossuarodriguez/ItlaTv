@@ -1,22 +1,34 @@
 using System.Diagnostics;
 using ItlaTv.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ItlaTv.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly StreamingContext _context;
+        private readonly MovieService _movieService;
+
+        public HomeController(StreamingContext context, MovieService movieService)
         {
-            _logger = logger;
+            _context = context;
+            _movieService = movieService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var seriesList = GetSeriesFromDatabase();
-            return View(seriesList);
+            var seriesLocales = await _context.Series
+                .Include(s => s.Productora)
+                .Include(s => s.GeneroPrimario)
+                .Include(s => s.GeneroSecundario)
+                .ToListAsync();
+
+            var peliculasPopulares = await _movieService.GetPopularMoviesAsync();
+
+            ViewBag.Peliculas = peliculasPopulares["results"];
+            return View(seriesLocales);
         }
 
         private static List<Serie> GetSeriesFromDatabase()
