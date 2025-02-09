@@ -10,8 +10,8 @@
 <table class="mt-5 table">
     <thead>
         <tr>
-            <th>Nombre</th>
             <th>Imagen</th>
+            <th>Nombre</th>
             <th>Productora</th>
             <th>Género</th>
             <th>Acción</th>
@@ -21,8 +21,8 @@
         @foreach (var serie in Model)
         {
             <tr>
-               <td>@serie.Nombre</td>
                <td><img src="@serie.Imagen" width="50" /></td>
+               <td>@serie.Nombre</td>
                <td>@serie.Productora.Nombre</td>
                <td>@serie.GeneroPrimario.Nombre</td>
               <td><a asp-action="Details" asp-route-id="@serie.Id" class="btn btn-info">Ver</a></td> 
@@ -31,8 +31,41 @@
     </tbody>
 </table>
 
-<h2 class="mt-5">Peliculas Polulares</h2>
-    @foreach (var serie in Model)
-    {
-       
-    }
+<h2 class="mt-5">Películas Populares</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Puntuación</th>
+                <th>Fecha de Estreno</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.Peliculas != null)
+            {
+                @foreach (var pelicula in ViewBag.Peliculas)
+                {
+                    <tr>
+                        <td>
+                            <img src="https://image.tmdb.org/t/p/w200/@pelicula.poster_path" alt="@pelicula.title" width="100">
+                        </td>
+                        <td>@pelicula.title</td>
+                        <td class="w-25">@pelicula.overview </td>
+                        <td>@pelicula.vote_average / 10</td>
+                        <td>@pelicula.release_date</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center">No hay películas disponibles en este momento.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
