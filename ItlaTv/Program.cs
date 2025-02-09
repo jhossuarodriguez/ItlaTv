@@ -1,4 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using ItlaTv.Models;
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<StreamingContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

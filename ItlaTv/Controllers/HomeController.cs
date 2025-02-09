@@ -15,7 +15,13 @@ namespace ItlaTv.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var seriesList = GetSeriesFromDatabase();
+            return View(seriesList);
+        }
+
+        private static List<Serie> GetSeriesFromDatabase()
+        {
+            return new List<Serie>();
         }
 
         public IActionResult Privacy()
