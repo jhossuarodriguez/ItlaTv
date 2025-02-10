@@ -49,6 +49,75 @@ namespace ItlaTv.Controllers
             return View(seriesFiltradas);
         }
 
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var serie = await _context.Series
+                .Include(s => s.Productora)
+                .Include(s => s.GeneroPrimario)
+                .Include(s => s.GeneroSecundario)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (serie == null)
+            {
+                return NotFound();
+            }
+
+            var productoras = await _context.Productoras.ToListAsync();
+            var generos = await _context.Generos.ToListAsync();
+
+            ViewBag.Productoras = new SelectList(productoras, "Id", "Nombre", serie.ProductoraId);
+            ViewBag.Generos = new SelectList(generos, "Id", "Nombre", serie.GeneroPrimarioId);
+
+            return View(serie);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Imagen,ProductoraId,GeneroPrimarioId,GeneroSecundarioId")] Serie serie)
+        {
+            if (id != serie.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(serie);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!SerieExists(serie.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.Productoras = await _context.Productoras.ToListAsync();
+            ViewBag.Generos = await _context.Generos.ToListAsync();
+
+            return View(serie);
+        }
+
+        private bool SerieExists(int id)
+        {
+            return _context.Series.Any(e => e.Id == id);
+        }
+
         public async Task<IActionResult> Details(int id)
         {
             var serie = await _context.Series
@@ -70,6 +139,7 @@ namespace ItlaTv.Controllers
             var productoras = await _context.Productoras.ToListAsync();
             return View(productoras);
         }
+
 
         public async Task<IActionResult> Delete(int? id)
         {
