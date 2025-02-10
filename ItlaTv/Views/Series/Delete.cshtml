@@ -1,0 +1,17 @@
+﻿@model ItlaTv.Models.Serie
+
+@{
+    ViewData["Title"] = "Eliminar Serie";
+}
+
+<h2>¿Estás seguro de que deseas eliminar esta Serie?</h2>
+
+<div>
+    <h4>@Model.Nombre</h4>
+    <hr />
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>

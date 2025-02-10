@@ -52,6 +52,39 @@ namespace ItlaTv.Controllers
             return View(serie);
         }
 
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var productora = await _context.Productoras
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (productora == null)
+            {
+                return NotFound();
+            }
+
+            return View(productora);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var productora = await _context.Productoras.FindAsync(id);
+
+            if (productora != null)
+            {
+                _context.Productoras.Remove(productora);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
         public IActionResult Privacy()
         {
             return View();
