@@ -16,24 +16,37 @@ namespace ItlaTv.Controllers
             _movieService = movieService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string selectedProductora, string selectedGenero)
         {
-            var seriesLocales = await _context.Series
+            var productoras = await _context.Productoras.ToListAsync();
+            var generos = await _context.Generos.ToListAsync();
+
+            var seriesLocales = _context.Series
                 .Include(s => s.Productora)
                 .Include(s => s.GeneroPrimario)
                 .Include(s => s.GeneroSecundario)
-                .ToListAsync();
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(selectedProductora))
+            {
+                seriesLocales = seriesLocales.Where(s => s.Productora.Nombre == selectedProductora);
+            }
+
+            if (!string.IsNullOrEmpty(selectedGenero))
+            {
+                seriesLocales = seriesLocales.Where(s => s.GeneroPrimario.Nombre == selectedGenero || s.GeneroSecundario.Nombre == selectedGenero);
+            }
+
+            var seriesFiltradas = await seriesLocales.ToListAsync();
 
             var peliculasPopulares = await _movieService.GetPopularMoviesAsync();
+            var peliculas = peliculasPopulares?["results"]?.ToObject<List<object>>() ?? new List<object>();
 
-            ViewBag.Peliculas = peliculasPopulares["results"];
-            return View(seriesLocales);
-        }
+            ViewBag.Peliculas = peliculas;
+            ViewBag.Productoras = productoras;
+            ViewBag.Generos = generos;
 
-        public async Task<IActionResult> Productoras()
-        {
-            var productoras = await _context.Productoras.ToListAsync();
-            return View(productoras);
+            return View(seriesFiltradas);
         }
 
         public async Task<IActionResult> Details(int id)
@@ -50,6 +63,12 @@ namespace ItlaTv.Controllers
             }
 
             return View(serie);
+        }
+
+        public async Task<IActionResult> Productoras()
+        {
+            var productoras = await _context.Productoras.ToListAsync();
+            return View(productoras);
         }
 
         public async Task<IActionResult> Delete(int? id)

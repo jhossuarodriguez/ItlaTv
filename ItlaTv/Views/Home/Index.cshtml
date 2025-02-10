@@ -2,9 +2,38 @@
 
 <h2 class="mt-4 mb-4">Bienvenido al Catálogo de Series</h2>
 
+
+
 <form method="get">
-    <input type="text" name="search" placeholder="Buscar series..." class=" form-control mb-3" />
-    <button type="submit" class="btn btn-primary">Buscar</button>
+    <div class=" g-3">
+        <div class="col-sm">
+            <label for="search" class="form-label">Buscar series</label>
+            <input type="text" name="search" placeholder="Buscar series..." class="form-control" />
+        </div>
+        <div class="col-sm">
+            <label for="selectedProductora" class="form-label">Filtrar por Productora</label>
+            <select name="selectedProductora" class="form-control">
+                <option value="">Seleccionar Productora</option>
+                @foreach (var productora in ViewBag.Productoras as List<ItlaTv.Models.Productora>)
+                {
+                    <option value="@productora.Nombre">@productora.Nombre</option>
+                }
+            </select>
+        </div>
+        <div class="col-sm">
+            <label for="selectedGenero" class="form-label">Filtrar por Género</label>
+            <select name="selectedGenero" class="form-control">
+                <option value="">Seleccionar Género</option>
+                @foreach (var genero in ViewBag.Generos as List<ItlaTv.Models.Genero>)
+                {
+                    <option value="@genero.Nombre">@genero.Nombre</option>
+                }
+            </select>
+        </div>
+        <div class="mt-2">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </div>
+    </div>
 </form>
 
 <table class="mt-5 table">
@@ -17,17 +46,17 @@
             <th>Detalles</th>
         </tr>
     </thead>
-    <tbody> 
+    <tbody>
         @foreach (var serie in Model)
         {
             <tr>
-               <td><img src="@serie.Imagen" width="100" /></td>
-               <td>@serie.Nombre</td>
-               <td>@serie.GeneroPrimario.Nombre</td>
-               <td>@serie.Productora.Nombre</td>
-              <td><a asp-action="Details" asp-route-id="@serie.Id" class="btn btn-info">Ver</a></td> 
+                <td><img src="@serie.Imagen" width="100" /></td>
+                <td>@serie.Nombre</td>
+                <td>@serie.GeneroPrimario?.Nombre</td>
+                <td>@serie.Productora?.Nombre</td>
+                <td><a asp-action="Details" asp-route-id="@serie.Id" class="btn btn-info">Ver</a></td>
             </tr>
-        } 
+        }
     </tbody>
 </table>
 
