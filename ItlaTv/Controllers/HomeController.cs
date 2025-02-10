@@ -36,6 +36,22 @@ namespace ItlaTv.Controllers
             return new List<Serie>();
         }
 
+        public async Task<IActionResult> Details(int id)
+        {
+            var serie = await _context.Series
+                .Include(s => s.Productora)
+                .Include(s => s.GeneroPrimario)
+                .Include(s => s.GeneroSecundario)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (serie == null)
+            {
+                return NotFound();
+            }
+
+            return View(serie);
+        }
+
         public IActionResult Privacy()
         {
             return View();

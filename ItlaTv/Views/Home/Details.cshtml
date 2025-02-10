@@ -1,0 +1,14 @@
+﻿@model ItlaTv.Models.Serie
+
+<h2>@Model.Nombre</h2>
+
+<div class="ratio ratio-16x9">
+    <iframe 
+            src="@($"https://www.youtube.com/embed/{Model.EnlaceVideo.Split('=')[1]}")"
+            allowfullscreen>
+    </iframe>
+</div>
+
+<a asp-action="Index" class="mt-5 btn btn-primary">Volver</a>
+
+
