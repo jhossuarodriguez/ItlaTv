@@ -7,7 +7,6 @@ namespace ItlaTv.Controllers
 {
     public class HomeController : Controller
     {
-
         private readonly StreamingContext _context;
         private readonly MovieService _movieService;
 
@@ -31,9 +30,10 @@ namespace ItlaTv.Controllers
             return View(seriesLocales);
         }
 
-        private static List<Serie> GetSeriesFromDatabase()
+        public async Task<IActionResult> Productoras()
         {
-            return new List<Serie>();
+            var productoras = await _context.Productoras.ToListAsync();
+            return View(productoras);
         }
 
         public async Task<IActionResult> Details(int id)
